@@ -55,31 +55,81 @@
   <h3>Activity 1</h3>
   <div class="output">
     <?php
-      $name = "Mark";
-      $age = 23;
-      $color = "black";
-
-      echo "Hi, I am $name, I am $age years old, and my favorite color is $color";
+      $name = "";
+      $age = "";
+      $color = "";
     ?>
+    <form action = "" method="POST">
+      Name: <input type="text" name="name"><br>
+      Age: <input type="number" name="age"><br>
+      Color: <input type="text" name="color"><br>
+      <input type="submit">
+
+      <p>Hi, I am <?php echo $_POST["name"];?>, I am <?php echo $_POST["age"];?>, and my favorite color is <?php echo $_POST["color"];?></p>
+    </form>
   </div>
 </div>
 
 <div class="activity">
   <h3>Activity 2</h3>
   <div class="output">
+    <form action="" method="POST">
+      IntA: <input type="number" name="digit1" required><br>
+      IntB: <input type="number" name="digit2" required><br>
+      
+      
+      Operation: <select id="operation" name="operation">
+        <option value="sum">Addition (+)</option>
+        <option value="difference">Subtraction (-)</option>
+        <option value="product">Multiply (*)</option>
+        <option value="quotient">Divide (/)</option>
+      </select>
+      <input type = "submit" value="Calculate">
+    </form>
+
+
     <?php
-      $a = 9;
-      $b = 10;
+      if ($_SERVER["REQUEST_METHOD"] == "POST"){
+        $digit1 = $_POST["digit1"];
+        $digit2 = $_POST["digit2"];
+        $operation = $_POST["operation"];
 
-      $sum = $a + $b;
-      $difference = $a - $b;
-      $product = $a * $b;
-      $quotient = $a / $b;
+        if (!is_numeric($digit1) || !is_numeric($digit2)) {
+          echo "Enter valid numbers";
+          exit();
+        }
 
-      echo "The sum of 9 + 10 is $sum\n";
-      echo "The difference of 9 + 10 is $difference\n";
-      echo "The product of 9 + 10 is $product\n";
-      echo "The quotient of 9 + 10 is $quotient";
+        $result = 0;
+
+        switch($operation){
+          case "sum":
+            $result = $digit1 + $digit2;
+            break;
+
+          case "difference":
+            $result = $digit1 - $digit2;
+            break;
+          case "product":
+            $result = $digit1 * $digit2;
+            break;
+
+          case "quotient":
+            if ($num2 != 0) {
+              $result = $digit1 / $digit2;
+            } else {
+              echo "Cannot divide by 0";
+              exit();
+            }
+            break;
+          default:
+            echo "Invalid Operation";
+            exit();
+        }
+
+        echo "The result of the opreation is: " . $result;
+      } else {
+        echo "Form not submitted";
+      }
     ?>
   </div>
 </div>
